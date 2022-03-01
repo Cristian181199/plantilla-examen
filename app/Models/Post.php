@@ -9,8 +9,26 @@ class Post extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'body',
+        'user_id',
+    ];
+
+    protected $appends = array('commentstotal');
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function getCommentstotalAttribute()
+    {
+        return $this->comments()->count();
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
 
 class PostController extends Controller
 {
@@ -15,7 +17,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        return view('posts.index', [
+            'posts' => Post::all(),
+        ]);
     }
 
     /**
@@ -25,7 +29,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -36,7 +40,12 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        $validados = $request->validated();
+        $post = new Post($validados);
+        $post->user_id = Auth::user()->id;
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post publicado con exito');
     }
 
     /**
@@ -47,7 +56,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', [
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -58,7 +69,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', [
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -70,7 +83,12 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $validados = $request->validated();
+        $post->title = $validados['title'];
+        $post->body = $validados['body'];
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post editado con exito');
     }
 
     /**
@@ -81,6 +99,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('success', 'Post eliminado con exito');
     }
 }
