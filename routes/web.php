@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
-use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,5 +27,8 @@ Route::resource('posts', PostController::class);
 
 Route::post('/posts/{post}', [CommentController::class, 'store'])
     ->name('comments.store');
+
+Route::delete('/posts/{post}/comment/{comment:id}', [CommentController::class, 'destroy'])
+    ->name('comments.destroy');
 
 require __DIR__.'/auth.php';

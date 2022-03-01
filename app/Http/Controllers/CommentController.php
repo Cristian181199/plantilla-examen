@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -34,9 +36,15 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, Post $post)
     {
-        //
+        $validados = $request->validated();
+        $comment = new Comment($validados);
+        $comment->user_id = Auth::user()->id;
+        $comment->post_id = $post->id;
+        $comment->save();
+
+        return redirect()->route('posts.show', [$post])->with('success', 'Comentario publicado con exito');
     }
 
     /**
@@ -79,8 +87,10 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Post $post, Comment $comment)
     {
-        //
+        $comment->delete();
+
+        return redirect()->route('posts.show', [$post])->with('success', 'Post eliminado con exito');
     }
 }
