@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,5 +31,11 @@ Route::post('/posts/{post}', [CommentController::class, 'store'])
 
 Route::delete('/posts/{post}/comment/{comment:id}', [CommentController::class, 'destroy'])
     ->name('comments.destroy');
+
+// Rutas para gestionar el perfil de cada usuario.
+Route::view('perfil', 'perfil.perfil')
+->name('perfil');
+Route::put('perfil', [PerfilController::class, 'update'])
+->name('perfil.update');
 
 require __DIR__.'/auth.php';

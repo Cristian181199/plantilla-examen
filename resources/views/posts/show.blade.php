@@ -12,8 +12,8 @@
         </div>
         <div class="px-8 py-4">
             <div class="flex">
-                <div class="w-10 h-10 bg-cover bg-center rounded-full mr-3 shadow-inner">
-                    <img src="https://ahampriyanshu.com/blog/logo.png" alt="8bit avatar" class="overflow-hidden h-10 w-10">
+                <div class="w-10 h-10 bg-cover bg-center mr-3">
+                    <img src="{{ asset('storage/avatares/' . $post->user_id . '.jpg') }}" alt="8bit avatar" class=" rounded-full overflow-hidden h-10 w-10">
                                 </div>
                     <div>
                         <p class="text-gray-900 dark:text-white font-medium">{{ $post->user->email }}</p>
@@ -45,7 +45,7 @@
                 @foreach ($post->comments as $comment)
                 <div class="flex mt-4">
                     <div class="w-10 h-10 bg-cover bg-center rounded-full mr-3 shadow-inner">
-                        <img src="https://ahampriyanshu.com/blog/logo.png" alt="8bit avatar" class="overflow-hidden h-10 w-10">
+                        <img src="{{ asset('storage/avatares/' . $comment->user_id . '.jpg') }}" alt="8bit avatar" class="overflow-hidden h-10 w-10">
                                     </div>
                         <div>
                             <p class="text-gray-900 dark:text-white font-medium">{{ $comment->user->email }}</p>
