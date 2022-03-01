@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use App\Mail\MailtrapExample;
 use App\Models\Comment;
 use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CommentController extends Controller
 {
@@ -40,9 +41,11 @@ class CommentController extends Controller
     {
         $validados = $request->validated();
         $comment = new Comment($validados);
-        $comment->user_id = Auth::user()->id;
+        $comment->user_id = $request->user()->id;
         $comment->post_id = $post->id;
         $comment->save();
+
+        Mail::to($request->user())->send(new MailtrapExample($post, $comment));
 
         return redirect()->route('posts.show', [$post])->with('success', 'Comentario publicado con exito');
     }
