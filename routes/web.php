@@ -26,14 +26,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::resource('posts', PostController::class);
-
-Route::post('/posts/{post}', [CommentController::class, 'store'])
-    ->name('comments.store');
-
-Route::delete('/posts/{post}/comment/{comment:id}', [CommentController::class, 'destroy'])
-    ->name('comments.destroy');
-
 // Rutas para gestionar el perfil de cada usuario.
 Route::view('perfil', 'perfil.perfil')
 ->name('perfil');
@@ -44,8 +36,10 @@ Route::put('perfil', [PerfilController::class, 'update'])
 Route::resource('monografias', MonografiaController::class)
     ->middleware('can:entrar-crud-monografias, auth');
 
-Route::get('/articulos', [ArticuloController::class, 'index']);
+Route::get('/articulos', [ArticuloController::class, 'index'])
+    ->middleware('auth');
 
-Route::get('/monografias/{monografia}/autores', [MonografiaController::class, 'monografia_autores']);
+Route::get('/monografias/{monografia}/autores', [MonografiaController::class, 'monografia_autores'])
+    ->middleware('auth');
 
 require __DIR__.'/auth.php';
