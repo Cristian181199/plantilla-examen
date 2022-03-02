@@ -16,6 +16,6 @@ class Articulo extends Model
 
     public function autores()
     {
-        return $this->belongsToMany(Autor::class, 'autores');
+        return $this->belongsToMany(Autor::class);
     }
 }

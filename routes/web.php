@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\MonografiaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
@@ -37,5 +39,13 @@ Route::view('perfil', 'perfil.perfil')
 ->name('perfil');
 Route::put('perfil', [PerfilController::class, 'update'])
 ->name('perfil.update');
+
+
+Route::resource('monografias', MonografiaController::class)
+    ->middleware('can:entrar-crud-monografias, auth');
+
+Route::get('/articulos', [ArticuloController::class, 'index']);
+
+Route::get('/monografias/{monografia}/autores', [MonografiaController::class, 'monografia_autores']);
 
 require __DIR__.'/auth.php';
